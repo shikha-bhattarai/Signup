@@ -12,7 +12,7 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        emailTextview = (EditText) findViewById(R.id.emailTextview);
-        passTextview = (EditText) findViewById(R.id.passTextview);
+        emailTextview = (EditText) findViewById(R.id.emailEditText);
+        passTextview = (EditText) findViewById(R.id.passEditText);
     }
 }
