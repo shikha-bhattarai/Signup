@@ -9,6 +9,7 @@ import android.util.Patterns;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.Toast;
 
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
@@ -60,19 +61,30 @@ public class SignUp extends AppCompatActivity implements View.OnClickListener{
 
         if(firstNameString.equals("")){
             firstName.setError("Please enter a first name");
-        }else if(lastNameString.equals("")){
+            return;
+        }
+
+        if(lastNameString.equals("")){
             lastName.setError("Please enter a last name");
-        }else if(emailString.equals("")){
+            return;
+        }
+        if(emailString.equals("")){
             email.setError("Please enter an email");
+            return;
+        }
+        if(passwordString.length()<6){
+            password.setError("Minimun password length is 6");
+            return;
+        }
+        if(!passwordString.equals(passwordString02)){
+            Toast.makeText(this, "Password does not match", Toast.LENGTH_SHORT).show();
+            return;
         }
 
         if(!Patterns.EMAIL_ADDRESS.matcher(emailString).matches()){
             email.setError("Please enter a valid email");
+            return;
         }
-        if(passwordString.length()<6){
-            password.setError("Minimun password length is 6");
-        }
-
         mAuth.createUserWithEmailAndPassword(emailString, passwordString).addOnCompleteListener(new OnCompleteListener<AuthResult>() {
             @Override
             public void onComplete(@NonNull Task<AuthResult> task) {
