@@ -1,7 +1,5 @@
 package com.example.inclass09;
 
-import java.io.Serializable;
-
 public class Contact{
     String fullName;
     String email;

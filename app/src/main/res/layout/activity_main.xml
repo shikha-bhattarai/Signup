@@ -42,10 +42,9 @@
         android:layout_height="wrap_content"
         android:layout_marginStart="72dp"
         android:layout_marginTop="108dp"
-        android:text="Button"
+        android:text="@string/login"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/passEditText"
-        tools:text="@string/login1" />
+        app:layout_constraintTop_toBottomOf="@+id/passEditText" />
 
     <Button
         android:id="@+id/signupbtn"
@@ -54,10 +53,9 @@
         android:layout_marginStart="8dp"
         android:layout_marginTop="108dp"
         android:layout_marginEnd="8dp"
-        android:text="@string/signup1"
+        android:text="@string/signup"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.394"
         app:layout_constraintStart_toEndOf="@+id/loginbtn"
-        app:layout_constraintTop_toBottomOf="@+id/passEditText"
-        tools:text="@string/signup" />
+        app:layout_constraintTop_toBottomOf="@+id/passEditText" />
 </android.support.constraint.ConstraintLayout>
