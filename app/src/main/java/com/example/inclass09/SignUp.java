@@ -7,6 +7,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.util.Patterns;
 import android.view.View;
+import android.widget.Button;
 import android.widget.EditText;
 
 import com.google.android.gms.tasks.OnCompleteListener;
@@ -30,6 +31,9 @@ public class SignUp extends AppCompatActivity implements View.OnClickListener{
         password02 = findViewById(R.id.confirmPassEditText);
         FirebaseApp.initializeApp(this);
         mAuth = FirebaseAuth.getInstance();
+
+        Button button = findViewById(R.id.signUpbtn);
+        button.setOnClickListener(this);
         findViewById(R.id.signupbtn).setOnClickListener(this);
 
     }
