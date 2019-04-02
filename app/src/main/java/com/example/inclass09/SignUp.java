@@ -30,7 +30,7 @@ public class SignUp extends AppCompatActivity implements View.OnClickListener{
         email = findViewById(R.id.emailEditText);
         password = findViewById(R.id.passEditText);
         password02 = findViewById(R.id.confirmPassEditText);
-        FirebaseApp.initializeApp(this);
+        //FirebaseApp.initializeApp(this);
         mAuth = FirebaseAuth.getInstance();
 
         Button button = findViewById(R.id.signUpbtn);
@@ -89,7 +89,10 @@ public class SignUp extends AppCompatActivity implements View.OnClickListener{
             @Override
             public void onComplete(@NonNull Task<AuthResult> task) {
                 if(task.isSuccessful()){
-                    Log.d("sign up", "successful");
+                    Toast.makeText(SignUp.this, "Sign Up Successful", Toast.LENGTH_SHORT).show();
+                    startActivity(new Intent(SignUp.this, ContactList.class));
+                }else{
+                    Toast.makeText(SignUp.this, task.getException().getMessage(), Toast.LENGTH_SHORT).show();
                 }
             }
         });

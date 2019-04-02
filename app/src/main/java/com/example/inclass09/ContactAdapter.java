@@ -20,7 +20,7 @@ public class ContactAdapter extends ArrayAdapter<Contact> {
         ViewHolder viewHolder;
 
         if (convertView == null) { //if no view to re-use then inflate a new one
-            convertView = LayoutInflater.from(getContext()).inflate(R.layout.contact_listview, parent, false);
+            convertView = LayoutInflater.from(getContext()).inflate(R.layout.fragment_contact_list, parent, false);
             viewHolder = new ViewHolder();
             viewHolder.fullNameTextView = (TextView) convertView.findViewById(R.id.fullNameTextView);
             viewHolder.phoneTextView = (TextView) convertView.findViewById(R.id.phoneTextView);

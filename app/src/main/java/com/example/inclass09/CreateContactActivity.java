@@ -1,9 +1,8 @@
-/*
 package com.example.inclass09;
 
 import android.content.Intent;
-import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
+import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -15,7 +14,8 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
-public class CreateContact extends AppCompatActivity {
+public class CreateContactActivity extends AppCompatActivity {
+
     EditText fullName, email, phone;
     Button submit;
     ImageView imageView;
@@ -25,10 +25,12 @@ public class CreateContact extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.new_contact);
+        setContentView(R.layout.activity_create_contact);
+
         fullName = (EditText) findViewById(R.id.nameEditText);
         email = (EditText) findViewById(R.id.emailEditText);
         phone = (EditText) findViewById(R.id.phoneEditText);
+        imageView = findViewById(R.id.imageView2);
         submit = findViewById(R.id.submitbtn);
 
         //Camera
@@ -59,4 +61,3 @@ public class CreateContact extends AppCompatActivity {
         startActivityForResult(intent,REQUEST_CAMERA);
     }
 }
-*/
