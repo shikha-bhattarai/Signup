@@ -7,6 +7,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
+import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.ListView;
 import android.widget.TextView;
@@ -59,10 +60,20 @@ public class ContactList extends AppCompatActivity {
                 if (contactAdapter != null) {
                     contactAdapter.notifyDataSetChanged();
                 }
+
             }
             @Override
             public void onCancelled(@NonNull DatabaseError databaseError) {
 
+            }
+        });
+        listView.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
+            @Override
+            public boolean onItemLongClick(AdapterView<?> parent, View view, int position, long id) {
+                arrayList.remove(position);
+
+                contactAdapter.notifyDataSetChanged();
+                return true;
             }
         });
 
@@ -79,7 +90,6 @@ public class ContactList extends AppCompatActivity {
             public void onClick(View view) {
                 FirebaseAuth.getInstance().signOut();
                 Intent intent = new Intent(ContactList.this, MainActivity.class);
-                //startActivityForResult(intent, REQ_CODE);
                 startActivity(intent);
 
             }

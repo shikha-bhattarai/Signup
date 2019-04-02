@@ -42,8 +42,19 @@ public class MainActivity extends AppCompatActivity{
             @Override
             public void onClick(View v) {
 
-                String email = emailTextview.getText().toString().trim();
+                final String email = emailTextview.getText().toString().trim();
                 final String password = passTextview.getText().toString().trim();
+                if(email.equals("")){
+                    emailTextview.setError("Please enter your email");
+                    return;
+                }
+                if(password.equals("")){
+                    passTextview.setError("Please enter your password");
+                    return;
+                }
+                if (password.length() < 6) {
+                    passTextview.setError("Minimun password length is 6");
+                }
 
 
                 auth = FirebaseAuth.getInstance();
@@ -53,13 +64,10 @@ public class MainActivity extends AppCompatActivity{
                             @Override
                             public void onComplete(@NonNull Task<AuthResult> task) {
                                 if (!task.isSuccessful()) {
-
-                                    if (password.length() < 6) {
-                                        passTextview.setError("Minimun password length is 6");
-                                    } else {
                                         Toast.makeText(MainActivity.this, "Auth failed", Toast.LENGTH_LONG).show();
-                                    }
-                                } else {
+                                        return;
+                                }
+                                else {
                                     Intent intent = new Intent(MainActivity.this, ContactList.class);
                                     startActivity(intent);
                                     finish();
