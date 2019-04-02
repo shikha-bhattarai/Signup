@@ -24,7 +24,7 @@ public class SignUp extends AppCompatActivity implements View.OnClickListener{
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.sign_up);
-        firstName = findViewById(R.id.nameEditText);
+        firstName = findViewById(R.id.FirstNameEditText);
         lastName = findViewById(R.id.lastNameEditText);
         email = findViewById(R.id.emailEditText);
         password = findViewById(R.id.passEditText);
@@ -34,7 +34,6 @@ public class SignUp extends AppCompatActivity implements View.OnClickListener{
 
         Button button = findViewById(R.id.signUpbtn);
         button.setOnClickListener(this);
-        findViewById(R.id.signupbtn).setOnClickListener(this);
 
     }
 
