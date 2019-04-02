@@ -1,14 +1,16 @@
 package com.example.inclass09;
 
-public class Contact{
+import java.io.Serializable;
+
+public class Contact implements Serializable {
     String fullName;
     String email;
-    int phone;
+    String phone;
 
     public Contact() {
     }
 
-    public Contact(String fullName, String email, int phone) {
+    public Contact(String fullName, String email, String phone) {
         this.fullName = fullName;
         this.email = email;
         this.phone = phone;
@@ -22,7 +24,7 @@ public class Contact{
         return email;
     }
 
-    public int getPhone() {
+    public String getPhone() {
         return phone;
     }
 

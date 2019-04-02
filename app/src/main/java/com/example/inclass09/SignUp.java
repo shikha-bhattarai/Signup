@@ -16,6 +16,7 @@ import com.google.android.gms.tasks.Task;
 import com.google.firebase.FirebaseApp;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.database.FirebaseDatabase;
 
 public class SignUp extends AppCompatActivity implements View.OnClickListener{
 
@@ -53,10 +54,10 @@ public class SignUp extends AppCompatActivity implements View.OnClickListener{
     }
 
     public void registerUser(){
-        String firstNameString = firstName.getText().toString();
-        String lastNameString = lastName.getText().toString();
-        String emailString = email.getText().toString();
-        String passwordString = password.getText().toString();
+        final String firstNameString = firstName.getText().toString();
+        final String lastNameString = lastName.getText().toString();
+        final String emailString = email.getText().toString();
+        final String passwordString = password.getText().toString();
         String passwordString02 = password02.getText().toString();
 
         if(firstNameString.equals("")){
@@ -89,7 +90,20 @@ public class SignUp extends AppCompatActivity implements View.OnClickListener{
             @Override
             public void onComplete(@NonNull Task<AuthResult> task) {
                 if(task.isSuccessful()){
-                    Toast.makeText(SignUp.this, "Sign Up Successful", Toast.LENGTH_SHORT).show();
+                    //Toast.makeText(SignUp.this, "Sign Up Successful", Toast.LENGTH_SHORT).show();
+                    User user = new User(firstNameString, lastNameString, emailString, passwordString);
+                    FirebaseDatabase.getInstance().getReference("Users")
+                            .child(FirebaseAuth.getInstance().getCurrentUser().getUid()).setValue(user)
+                    .addOnCompleteListener(new OnCompleteListener<Void>() {
+                        @Override
+                        public void onComplete(@NonNull Task<Void> task) {
+                            if(task.isSuccessful()){
+                                Toast.makeText(SignUp.this, "Registration Complete", Toast.LENGTH_LONG).show();
+                            }else{
+                                Toast.makeText(SignUp.this, "Registration Incomplete", Toast.LENGTH_LONG).show();
+                            }
+                        }
+                    });
                     startActivity(new Intent(SignUp.this, ContactList.class));
                 }else{
                     Toast.makeText(SignUp.this, task.getException().getMessage(), Toast.LENGTH_SHORT).show();

@@ -30,7 +30,7 @@ public class ContactAdapter extends ArrayAdapter<Contact> {
             viewHolder = (ViewHolder) convertView.getTag();
         }
         viewHolder.fullNameTextView.setText(contact.fullName);
-        viewHolder.phoneTextView.setText(contact.phone);
+        viewHolder.phoneTextView.setText(String.valueOf(contact.phone));
         viewHolder.emailTextView.setText(contact.email);
 
         return convertView;
