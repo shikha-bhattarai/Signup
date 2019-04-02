@@ -1,6 +1,7 @@
 package com.example.inclass09;
 
 import android.content.Intent;
+import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -8,19 +9,28 @@ import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ListView;
+import android.widget.TextView;
 
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
 
 public class ContactList extends AppCompatActivity {
 
-    ArrayList<Contact>arrayList;
+    ArrayList<Contact> arrayList;
     ContactAdapter contactAdapter;
     public static final int REQ_CODE = 100;
     ListView listView;
     public static final String VALUE_KEY = "list";
     Button logout;
+    DatabaseReference mDatabase;
 
 
     @Override
@@ -30,33 +40,55 @@ public class ContactList extends AppCompatActivity {
 
         arrayList = new ArrayList<>();
         listView = findViewById(R.id.listView);
-        arrayList.add(new Contact("John", "em", "828565896"));
+        FirebaseDatabase database = FirebaseDatabase.getInstance();
+        mDatabase = database.getReference("contact").child(FirebaseAuth.getInstance().getCurrentUser().getUid());
 
         contactAdapter = new ContactAdapter(this, R.layout.fragment_contact_list, arrayList);
         listView.setAdapter(contactAdapter);
-        contactAdapter.notifyDataSetChanged();
+
+        mDatabase.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                arrayList.clear();
+                Contact a;
+                for (DataSnapshot data : dataSnapshot.getChildren()) {
+                    a = data.getValue(Contact.class);
+                    arrayList.add(a);
+                }
+                //this checks if adapter is null, and also sort the expense by cost at the start
+                if (contactAdapter != null) {
+                    contactAdapter.notifyDataSetChanged();
+                }
+            }
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+
+            }
+        });
 
         findViewById(R.id.buttonCreateContact).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 Intent intent = new Intent(ContactList.this, CreateContactActivity.class);
-                startActivityForResult(intent, REQ_CODE);
+                startActivity(intent);
             }
         });
+
         findViewById(R.id.logoutbtn).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 FirebaseAuth.getInstance().signOut();
                 Intent intent = new Intent(ContactList.this, MainActivity.class);
-                startActivityForResult(intent, REQ_CODE);
+                //startActivityForResult(intent, REQ_CODE);
+                startActivity(intent);
+
             }
         });
 
 
-
     }
 
-    @Override
+    /*@Override
     protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
         if(requestCode == REQ_CODE){
@@ -73,6 +105,6 @@ public class ContactList extends AppCompatActivity {
                 Log.d("demo", "no value received");
             }
         }
-    }
+    }*/
 
 }

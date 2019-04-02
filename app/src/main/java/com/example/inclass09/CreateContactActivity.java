@@ -74,11 +74,13 @@ public class CreateContactActivity extends AppCompatActivity {
                     Contact contact = new Contact(fullNameString, emailString, phoneString);
                     String key = mContactRef.push().getKey();
                     mContactRef.child(key).setValue(contact);
+                    //Intent intent = new Intent(CreateContactActivity.this, ContactList.class);
+                    finish();
 
-                Intent intent = new Intent();
+               /* Intent intent = new Intent();
                 intent.putExtra(CONTACT_KEY, contact);
                 setResult(RESULT_OK, intent);
-                finish();
+                finish();*/
             }
         });
 
