@@ -6,12 +6,14 @@ import android.net.Uri;
 import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.telephony.PhoneNumberFormattingTextWatcher;
 import android.util.Log;
 import android.util.Patterns;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.ProgressBar;
 import android.widget.Toast;
 
 import com.google.android.gms.tasks.OnCompleteListener;
@@ -43,6 +45,7 @@ public class CreateContactActivity extends AppCompatActivity {
     private FirebaseStorage firebaseStorage = FirebaseStorage.getInstance();
     String url;
     boolean noImageUploaded;
+    ProgressBar progressBar;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -53,6 +56,7 @@ public class CreateContactActivity extends AppCompatActivity {
         phone = findViewById(R.id.phoneEditText);
         userImage = findViewById(R.id.userImage);
         submit = findViewById(R.id.submitbtn);
+        progressBar = findViewById(R.id.progressBar);
         noImageUploaded = true;
         mContactRef = mRootRef.child("contact").child(FirebaseAuth.getInstance().getCurrentUser().getUid());
 
@@ -63,6 +67,9 @@ public class CreateContactActivity extends AppCompatActivity {
                 uploadImage();
             }
         });
+
+        phone.addTextChangedListener(new PhoneNumberFormattingTextWatcher());
+
 
 
         submit.setOnClickListener(new View.OnClickListener() {
@@ -81,8 +88,8 @@ public class CreateContactActivity extends AppCompatActivity {
                     return;
                 }
 
-                if (phoneString.length() != 10) {
-                    phone.setError("Please enter a phone without any symbol");
+                if (phoneString.length() != 14) {
+                    phone.setError("Please enter a 10 digit phone number");
                     return;
                 }
 
@@ -135,12 +142,13 @@ public class CreateContactActivity extends AppCompatActivity {
         if (requestCode == REQUEST_CAMERA) {
             Bitmap thumbnail = (Bitmap) data.getExtras().get("data");
             imageURI = data.getData();
-            userImage.setImageBitmap(thumbnail);
+            submit.setEnabled(false);
+            progressBar.setVisibility(View.VISIBLE);
             uploadFile(thumbnail);
         }
     }
 
-    private void uploadFile(Bitmap bitmap) {
+    private void uploadFile(final Bitmap bitmap) {
         userImage.setDrawingCacheEnabled(true);
         userImage.buildDrawingCache();
         // Bitmap bitmap = ((BitmapDrawable) userImage.getDrawable()).getBitmap();
@@ -159,6 +167,9 @@ public class CreateContactActivity extends AppCompatActivity {
                     public void onComplete(@NonNull Task<Uri> task) {
                         url = task.getResult().toString();
                         noImageUploaded = false;
+                        userImage.setImageBitmap(bitmap);
+                        submit.setEnabled(true);
+                        progressBar.setVisibility(View.INVISIBLE);
                         Toast.makeText(CreateContactActivity.this, "Image Loaded!", Toast.LENGTH_SHORT).show();
                     }
                 });
