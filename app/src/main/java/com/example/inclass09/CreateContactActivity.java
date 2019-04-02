@@ -1,6 +1,10 @@
 package com.example.inclass09;
 
 import android.content.Intent;
+import android.graphics.Bitmap;
+import android.net.Uri;
+import android.provider.MediaStore;
+import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Patterns;
@@ -8,26 +12,35 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.Toast;
 
+import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.database.DataSnapshot;
-import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
-import com.google.firebase.database.ValueEventListener;
+import com.google.firebase.storage.FirebaseStorage;
+import com.google.firebase.storage.StorageReference;
+import com.google.firebase.storage.UploadTask;
 
-import java.util.ArrayList;
+import java.io.ByteArrayOutputStream;
+import java.io.IOException;
+import java.util.UUID;
 
 public class CreateContactActivity extends AppCompatActivity {
 
     EditText fullName, email, phone;
     Button submit;
-    ImageView imageView;
+    ImageView userImage;
     public static final int REQUEST_CAMERA = 2;
     DatabaseReference mRootRef = FirebaseDatabase.getInstance().getReference();
     DatabaseReference mContactRef;
     Contact contact;
      static String CONTACT_KEY = "CONTACT";
+     Uri imageURI;
+    private StorageReference storageReference;
+    private FirebaseStorage firebaseStorage = FirebaseStorage.getInstance();
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -36,12 +49,12 @@ public class CreateContactActivity extends AppCompatActivity {
         fullName = findViewById(R.id.nameEditText);
         email = findViewById(R.id.emailEditText);
         phone = findViewById(R.id.phoneEditText);
-        imageView = findViewById(R.id.imageView2);
+        userImage = findViewById(R.id.userImage);
         submit = findViewById(R.id.submitbtn);
         mContactRef = mRootRef.child("contact").child(FirebaseAuth.getInstance().getCurrentUser().getUid());
 
         //Camera
-        imageView.setOnClickListener(new View.OnClickListener() {
+        userImage.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 uploadImage();
@@ -89,5 +102,47 @@ public class CreateContactActivity extends AppCompatActivity {
     private void uploadImage() {
         Intent intent = new Intent(android.provider.MediaStore.ACTION_IMAGE_CAPTURE);
         startActivityForResult(intent,REQUEST_CAMERA);
+    }
+
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if (requestCode == RESULT_CANCELED) {
+            return;
+        }
+        if (requestCode == REQUEST_CAMERA) {
+            Bitmap thumbnail = (Bitmap) data.getExtras().get("data");
+            imageURI = data.getData();
+            userImage.setImageBitmap(thumbnail);
+            uploadFile(thumbnail);
+        }
+    }
+
+    private void uploadFile(Bitmap bitmap) {
+        userImage.setDrawingCacheEnabled(true);
+        userImage.buildDrawingCache();
+        // Bitmap bitmap = ((BitmapDrawable) userImage.getDrawable()).getBitmap();
+        ByteArrayOutputStream baos = new ByteArrayOutputStream();
+        bitmap.compress(Bitmap.CompressFormat.JPEG, 100, baos);
+        byte[] dataByte = baos.toByteArray();
+
+        String path = "fireimage/" + UUID.randomUUID() + ".jpeg";
+        StorageReference fireimageRef = firebaseStorage.getReference(path);
+        UploadTask uploadTask = fireimageRef.putBytes(dataByte);
+        uploadTask.addOnSuccessListener(this, new OnSuccessListener<UploadTask.TaskSnapshot>() {
+            @Override
+            public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
+                Toast.makeText(CreateContactActivity.this, "Image Loaded!", Toast.LENGTH_SHORT).show();
+                String url = taskSnapshot.getMetadata().getReference().getDownloadUrl().toString();
+                //Upload upload = new Upload(url);
+
+            }
+        })
+                .addOnFailureListener(new OnFailureListener() {
+                    @Override
+                    public void onFailure(@NonNull Exception e) {
+                        Toast.makeText(CreateContactActivity.this, "Can not upload", Toast.LENGTH_SHORT);
+                    }
+                });
     }
 }
