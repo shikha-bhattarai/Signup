@@ -6,7 +6,10 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
+import android.widget.Button;
 import android.widget.ListView;
+
+import com.google.firebase.auth.FirebaseAuth;
 
 import java.util.ArrayList;
 
@@ -17,12 +20,14 @@ public class ContactList extends AppCompatActivity {
     public static final int REQ_CODE = 100;
     ListView listView;
     public static final String VALUE_KEY = "list";
+    Button logout;
 
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_contact_list);
+
         arrayList = new ArrayList<>();
         listView = findViewById(R.id.listView);
         arrayList.add(new Contact("John", "em", "828565896"));
@@ -38,6 +43,16 @@ public class ContactList extends AppCompatActivity {
                 startActivityForResult(intent, REQ_CODE);
             }
         });
+        findViewById(R.id.logoutbtn).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                FirebaseAuth.getInstance().signOut();
+                Intent intent = new Intent(ContactList.this, MainActivity.class);
+                startActivityForResult(intent, REQ_CODE);
+            }
+        });
+
+
 
     }
 
