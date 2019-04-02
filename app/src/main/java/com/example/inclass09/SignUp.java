@@ -34,6 +34,7 @@ public class SignUp extends AppCompatActivity implements View.OnClickListener{
 
         Button button = findViewById(R.id.signUpbtn);
         button.setOnClickListener(this);
+        findViewById(R.id.cancelButton).setOnClickListener(this);
 
     }
 
