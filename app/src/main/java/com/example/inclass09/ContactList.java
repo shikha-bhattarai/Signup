@@ -71,7 +71,7 @@ public class ContactList extends AppCompatActivity {
             @Override
             public boolean onItemLongClick(AdapterView<?> parent, View view, int position, long id) {
                 arrayList.remove(position);
-
+                mDatabase.removeValue();
                 contactAdapter.notifyDataSetChanged();
                 return true;
             }
