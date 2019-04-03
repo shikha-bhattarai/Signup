@@ -29,6 +29,7 @@ import com.google.firebase.storage.UploadTask;
 
 import java.io.ByteArrayOutputStream;
 import java.util.UUID;
+import java.util.regex.Pattern;
 
 public class CreateContactActivity extends AppCompatActivity {
 
@@ -88,10 +89,11 @@ public class CreateContactActivity extends AppCompatActivity {
                     return;
                 }
 
-                if (phoneString.length() != 10) {
-                    phone.setError("Please enter a 10 digit phone number");
+                if (!isValidMobile(phoneString)) {
+                    phone.setError("Please enter a valid phone number");
                     return;
                 }
+
 
                // boolean imageLoaded = hasImage(userImage);
 
@@ -182,5 +184,21 @@ public class CreateContactActivity extends AppCompatActivity {
                         Toast.makeText(CreateContactActivity.this, "Can not upload", Toast.LENGTH_SHORT);
                     }
                 });
+    }
+
+    public static boolean isValidMobile(String phone) {
+        boolean check = false;
+        if (!Pattern.matches("[a-zA-Z]+", phone)) {
+            if (phone.length() < 14 || phone.length() > 15) {
+                // if(phone.length() != 10) {
+                check = false;
+                // txtPhone.setError("Not Valid Number");
+            } else {
+                check = android.util.Patterns.PHONE.matcher(phone).matches();
+            }
+        } else {
+            check = false;
+        }
+        return check;
     }
 }
