@@ -10,6 +10,7 @@ public class Contact implements Serializable {
     String email;
     String phone;
     String urlImage;
+    String key;
 
     public Contact() {
     }
@@ -19,6 +20,14 @@ public class Contact implements Serializable {
         this.email = email;
         this.phone = phone;
         this.urlImage = urlImage;
+    }
+
+    public String getKey() {
+        return key;
+    }
+
+    public void setKey(String key) {
+        this.key = key;
     }
 
     public String getUrlImage() {

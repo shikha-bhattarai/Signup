@@ -69,25 +69,13 @@ public class ContactList extends AppCompatActivity {
         });
         listView.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
             @Override
-            public boolean onItemLongClick(AdapterView<?> parent, View view, final int position, long id) {
-                mDatabase.addListenerForSingleValueEvent(new ValueEventListener() {
-                    @Override
-                    public void onDataChange(DataSnapshot dataSnapshot) {
-                        for (DataSnapshot ds: dataSnapshot.getChildren()) {
-                            ds.getRef().removeValue();
-                        }
-                    }
-
-                    @Override
-                    public void onCancelled(DatabaseError databaseError) {
-
-                    }
-                });
-                arrayList.remove(position);
+            public boolean onItemLongClick(AdapterView<?> parent, View view, int position, long id) {
+                mDatabase.child(arrayList.get(position).getKey()).removeValue();
                 contactAdapter.notifyDataSetChanged();
                 return true;
             }
         });
+
 
         findViewById(R.id.buttonCreateContact).setOnClickListener(new View.OnClickListener() {
             @Override

@@ -103,10 +103,14 @@ public class CreateContactActivity extends AppCompatActivity {
                     Log.d("url666 ", "" + url);
                     //url = getResources().getDrawable(R.drawable.ic_launcher_background, null).toString();
                 }
-
-                Contact contact = new Contact(fullNameString, emailString, phoneString, url);
                 String key = mContactRef.push().getKey();
+                Contact contact = new Contact(fullNameString, emailString, phoneString, url);
+
+                contact.setKey(key);
+                Log.d("keyy", ""+key);
                 mContactRef.child(key).setValue(contact);
+
+
                 //Intent intent = new Intent(CreateContactActivity.this, ContactList.class);
                 finish();
 
