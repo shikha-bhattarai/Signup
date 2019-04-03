@@ -107,7 +107,6 @@ public class CreateContactActivity extends AppCompatActivity {
                 Contact contact = new Contact(fullNameString, emailString, phoneString, url);
 
                 contact.setKey(key);
-                Log.d("keyy", ""+key);
                 mContactRef.child(key).setValue(contact);
 
 
