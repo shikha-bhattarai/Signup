@@ -88,7 +88,7 @@ public class CreateContactActivity extends AppCompatActivity {
                     return;
                 }
 
-                if (phoneString.length() != 14) {
+                if (phoneString.length() != 10) {
                     phone.setError("Please enter a 10 digit phone number");
                     return;
                 }

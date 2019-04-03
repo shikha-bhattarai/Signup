@@ -69,11 +69,13 @@ public class ContactList extends AppCompatActivity {
         });
         listView.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
             @Override
-            public boolean onItemLongClick(AdapterView<?> parent, View view, int position, long id) {
+            public boolean onItemLongClick(AdapterView<?> parent, View view, final int position, long id) {
                 mDatabase.addListenerForSingleValueEvent(new ValueEventListener() {
                     @Override
                     public void onDataChange(DataSnapshot dataSnapshot) {
-                        dataSnapshot.getRef().removeValue();
+                        for (DataSnapshot ds: dataSnapshot.getChildren()) {
+                            ds.getRef().removeValue();
+                        }
                     }
 
                     @Override
