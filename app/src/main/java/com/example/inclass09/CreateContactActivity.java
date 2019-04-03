@@ -94,44 +94,20 @@ public class CreateContactActivity extends AppCompatActivity {
                     return;
                 }
 
-
-               // boolean imageLoaded = hasImage(userImage);
-
                 if (noImageUploaded) {
                     userImage.setImageDrawable(getResources().getDrawable(R.drawable.noimage, null));
                     url = Uri.parse("android.resource://com.example.inclass09/" + R.drawable.noimage).toString();
-                    Log.d("url666 ", "" + url);
-                    //url = getResources().getDrawable(R.drawable.ic_launcher_background, null).toString();
                 }
                 String key = mContactRef.push().getKey();
                 Contact contact = new Contact(fullNameString, emailString, phoneString, url);
 
                 contact.setKey(key);
                 mContactRef.child(key).setValue(contact);
-
-
-                //Intent intent = new Intent(CreateContactActivity.this, ContactList.class);
                 finish();
-
-               /* Intent intent = new Intent();
-                intent.putExtra(CONTACT_KEY, contact);
-                setResult(RESULT_OK, intent);
-                finish();*/
             }
         });
 
     }
-
-/*    private boolean hasImage(@NonNull ImageView view) {
-        Drawable drawable = view.getDrawable();
-        boolean hasImage = (drawable != null);
-
-        if (hasImage && (drawable instanceof BitmapDrawable)) {
-            hasImage = ((BitmapDrawable) drawable).getBitmap() != null;
-        }
-
-        return hasImage;
-    }*/
 
     private void uploadImage() {
         Intent intent = new Intent(android.provider.MediaStore.ACTION_IMAGE_CAPTURE);
@@ -156,7 +132,6 @@ public class CreateContactActivity extends AppCompatActivity {
     private void uploadFile(final Bitmap bitmap) {
         userImage.setDrawingCacheEnabled(true);
         userImage.buildDrawingCache();
-        // Bitmap bitmap = ((BitmapDrawable) userImage.getDrawable()).getBitmap();
         ByteArrayOutputStream baos = new ByteArrayOutputStream();
         bitmap.compress(Bitmap.CompressFormat.JPEG, 100, baos);
         byte[] dataByte = baos.toByteArray();
@@ -193,9 +168,7 @@ public class CreateContactActivity extends AppCompatActivity {
         boolean check = false;
         if (!Pattern.matches("[a-zA-Z]+", phone)) {
             if (phone.length() < 14 || phone.length() > 15) {
-                // if(phone.length() != 10) {
                 check = false;
-                // txtPhone.setError("Not Valid Number");
             } else {
                 check = android.util.Patterns.PHONE.matcher(phone).matches();
             }

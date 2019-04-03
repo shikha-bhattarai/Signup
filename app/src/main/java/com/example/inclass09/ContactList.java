@@ -56,7 +56,7 @@ public class ContactList extends AppCompatActivity {
                     a = data.getValue(Contact.class);
                     arrayList.add(a);
                 }
-                //this checks if adapter is null, and also sort the expense by cost at the start
+                //this checks if adapter is null
                 if (contactAdapter != null) {
                     contactAdapter.notifyDataSetChanged();
                 }
@@ -95,26 +95,6 @@ public class ContactList extends AppCompatActivity {
             }
         });
 
-
     }
-
-    /*@Override
-    protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
-        super.onActivityResult(requestCode, resultCode, data);
-        if(requestCode == REQ_CODE){
-            Log.d("demo", "dddd");
-            if(resultCode == RESULT_OK){
-                Log.d("demo", "wwwwwwwwwwwwwww");
-                    Contact contact = (Contact) getIntent().getExtras().getSerializable(CreateContactActivity.CONTACT_KEY);
-
-                    arrayList.add(contact);
-                    contactAdapter.notifyDataSetChanged();
-                    Log.d("demo", "sdfadfasfffffffffffffffffffffffffffffffffffffffffeceived");
-
-            }else if(resultCode == RESULT_CANCELED){
-                Log.d("demo", "no value received");
-            }
-        }
-    }*/
 
 }
