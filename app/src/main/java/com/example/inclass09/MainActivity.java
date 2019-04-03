@@ -1,3 +1,7 @@
+/*
+Teena Xiong & Shikha Bhattarai
+Homework05
+ */
 package com.example.inclass09;
 
 import android.content.Intent;
