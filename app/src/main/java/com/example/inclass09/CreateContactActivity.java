@@ -95,7 +95,7 @@ public class CreateContactActivity extends AppCompatActivity {
                 }
 
                 if (noImageUploaded) {
-                    userImage.setImageDrawable(getResources().getDrawable(R.drawable.noimage, null));
+                   // userImage.setImageDrawable(getResources().getDrawable(R.drawable.noimage, null));
                     url = Uri.parse("android.resource://com.example.inclass09/" + R.drawable.noimage).toString();
                 }
                 String key = mContactRef.push().getKey();
